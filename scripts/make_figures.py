@@ -111,25 +111,36 @@ fig.tight_layout()
 fig.savefig(OUT / "fig3_attribution.png")
 plt.close(fig)
 
-# --- Fig 4: taxonomy heatmap ---
-tax = pd.read_csv(Path(__file__).resolve().parents[1] / "experiments/m2-physics-taxonomy/results/taxonomy.csv")
-tax = tax.dropna(subset=["ratio"])
-piv = tax.pivot_table(index="law", columns="class", values="ratio", aggfunc="max")
-order_law = [l for l in ["L1_interwheel", "L2_speedo_rel", "L3_continuity", "L4_coolant_jump", "L5_speedo_env", "L6_coolant_env", "L7_speedo_freeze(inv)"] if l in piv.index]
-piv = piv.loc[order_law]
-fig, ax = plt.subplots(figsize=(4.6, 2.8))
-im = ax.imshow(np.log10(piv.values), aspect="auto", cmap="viridis")
-ax.set_xticks(range(len(piv.columns)), [c.replace("_", "\n") for c in piv.columns], fontsize=7)
-ax.set_yticks(range(len(piv.index)), [l.replace("_", " ") for l in piv.index], fontsize=7)
-for i in range(piv.shape[0]):
-    for j in range(piv.shape[1]):
-        v = piv.values[i, j]
-        if np.isfinite(v):
-            ax.text(j, i, f"{v:.3g}", ha="center", va="center", fontsize=6,
-                    color="white" if np.log10(v) < 1.5 else "black")
-ax.set_title("max inside/outside residual ratio (log color)", fontsize=8)
-fig.colorbar(im, ax=ax, shrink=0.8)
-fig.tight_layout()
+# --- Fig 4: taxonomy heatmaps (masquerade + fabrication families) ---
+tax_m = pd.read_csv(Path(__file__).resolve().parents[1] / "experiments/m2-physics-taxonomy/results/taxonomy.csv").dropna(subset=["ratio"])
+tax_f = pd.read_csv(Path(__file__).resolve().parents[1] / "experiments/m2b-fabrication/results/fabrication_taxonomy.csv").dropna(subset=["ratio"])
+order_law = ["L1_interwheel", "L2_speedo_rel", "L3_continuity", "L4_coolant_jump", "L5_speedo_env", "L6_coolant_env", "L7_speedo_freeze(inv)"]
+
+
+def fam_pivot(t):
+    t = t[t["class"] != "no_injection"].copy()
+    piv = t.pivot_table(index="law", columns="class", values="ratio", aggfunc="max")
+    return piv.reindex([l for l in order_law if l in piv.index])
+
+
+pivs = [fam_pivot(tax_m), fam_pivot(tax_f)]
+titles = ["masquerade captures", "fabrication captures"]
+fig, axes = plt.subplots(1, 2, figsize=(7.6, 2.9))
+vals = [np.log10(p.replace(0, np.nan)).stack() for p in pivs]
+vmin = min(v.min() for v in vals)
+vmax = max(v.max() for v in vals)
+for ax, piv, ttl in zip(axes, pivs, titles):
+    im = ax.imshow(np.log10(piv.values), aspect="auto", cmap="viridis", vmin=vmin, vmax=vmax)
+    ax.set_xticks(range(len(piv.columns)), [c.replace("_", "\n") for c in piv.columns], fontsize=6)
+    ax.set_yticks(range(len(piv.index)), [l.replace("_", " ").replace("(inv)", "") for l in piv.index], fontsize=6)
+    for i in range(piv.shape[0]):
+        for j in range(piv.shape[1]):
+            v = piv.values[i, j]
+            if np.isfinite(v):
+                ax.text(j, i, f"{v:.3g}", ha="center", va="center", fontsize=5,
+                        color="white" if np.log10(v) < (vmin + vmax) / 2 else "black")
+    ax.set_title(ttl, fontsize=8)
+fig.colorbar(im, ax=axes, shrink=0.85, label="max inside/outside ratio (log)")
 fig.savefig(OUT / "fig4_taxonomy.png")
 plt.close(fig)
 
