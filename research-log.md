@@ -44,3 +44,8 @@
 ## 2026-11-03 (tick 7) — M5 opened: figures + draft v0
 - 4 figures generated (timeline, PR curves, attribution regimes, taxonomy heatmap) -> paper/figures/.
 - paper/drafts/paper-v0.md: full workshop-length draft, humanizer-audited, all 20 citations from the verified tracker. Framing: measurement paper (where physics pays and where it does not).
+
+## 2026-11-03 (tick 8) — M2b fabrication taxonomy complete
+- Decoder with empirical bit-layout solver + validation gate (exact CSV reproduction). Gate caught: shipped DBC layouts are wrong for the CSVs (per-family layouts differ) — dataset-integrity finding.
+- Fabrications: 3/4 classes caught by physics (same as masquerades); reverse-light boundary holds in both injection modes; coolant fab n=1 unresolved.
+- P4 rejected, P5/P6 confirmed. Paper gains: taxonomy now covers all 26 attack captures + the DBC integrity caveat.

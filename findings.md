@@ -102,3 +102,13 @@ One-step wheel forecasting, PINN (physics loss: display-tracking + accel limit, 
 
 - Exact scaling of wheel-speed/speedometer/coolant signals under ROAD's obfuscation (identify from ambient data).
 - Do the four wheel-speed values in the masquerade payload stay *mutually* consistent (correlated) while violating continuity/plausibility vs the speedometer? — this is H1's core empirical question (M2).
+
+## M2b fabrication-taxonomy results (2026-11-03, experiments/m2b-fabrication/)
+
+Raw-log decoding with empirically solved bit layouts (validation gate: exact CSV reproduction). Fabrication classes:
+- correlated wheel fab (3): L1 178-585x, L3 258-1273x, L2d 86-984x -> caught. **P4 REJECTED: "correlated" fabs are NOT stealthy to physics** (payload grossly inter-inconsistent, same as masquerades).
+- speedometer fab (3): envelope 16384 vs 573-1590; display-jump 190-211x -> caught. P5 confirmed.
+- reverse-light fab (6): value-plausible, L2d ratio 0.02-0.06 -> evades, SAME as masquerade twins. P6 confirmed: the boundary holds across both injection modes.
+- coolant fab (1): inside/outside both 255 — unresolved mapping anomaly (n=1), excluded from claims.
+
+**Dataset-integrity finding:** the shipped anonymized DBC does NOT decode the published CSVs (starts 5/21/37/53 len-14 vs actual 0/16/32/48 with per-family lens 14/14/14/14 ambient vs 13/11/10/14 masquerade). Layouts differ per capture family; anyone using the shipped DBC gets wrong values. We recovered mappings empirically from log+CSV pairs (solver in run_m2b.py).
