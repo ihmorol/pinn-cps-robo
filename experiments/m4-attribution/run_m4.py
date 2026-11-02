@@ -12,8 +12,8 @@ from pinn_cps_robo.evaluate import ap_score, threshold_at, recall_fpr
 
 ROAD = Path(sys.argv[1])
 Q = 0.999
-LAM = 1.0
-REGIMES = [0.001, 0.01, 0.1, 1.0]
+LAM = float(sys.argv[2]) if len(sys.argv) > 2 else 1.0
+REGIMES = [float(x) for x in sys.argv[3].split(",")] if len(sys.argv) > 3 else [0.001, 0.01, 0.1, 1.0]
 EPOCHS = {0.001: 40, 0.01: 30, 0.1: 15, 1.0: 5}
 
 

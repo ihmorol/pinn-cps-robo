@@ -37,3 +37,6 @@
 - Mechanism: encoded physics is linear + data abundant -> twin learns it immediately. Both models FPR=0 on accelerator stress.
 - Verdict: physics value on this dataset = analytical residual formulation (D1, M2 taxonomy), NOT learned soft constraints. Reproduces Grossmann/Krishnapriyan in CPS security.
 - Next: exploratory lambda sweep {0.1, 10} + delta-encoding before paper claims; then M5 paper assembly.
+
+## 2026-11-03 (tick 6b) — lambda sweep: negative result robust
+- lambda in {0.1,1,10} x regimes {0.1%,100%}: no physics advantage anywhere (delta AP <= 0.017). M4 closed.

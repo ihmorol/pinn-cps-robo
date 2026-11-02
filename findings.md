@@ -96,7 +96,7 @@ One-step wheel forecasting, PINN (physics loss: display-tracking + accel limit, 
 - Mechanism: the encoded physics (display↔wheel tracking) is a *linear relation* the twin learns from ~1,000 frames; 1M ambient frames make soft constraints redundant. The acceleration-limit prior adds nothing to one-step forecasting (data already respects it).
 - Both models handle the accelerator stress captures perfectly (FPR=0) — unusual-but-genuine dynamics are explained by learned dynamics regardless of the constraint.
 - **Attribution verdict (H3): negative for learned-physics on this task.** The physics value in this dataset lives in the ANALYTICAL residual formulation (D1: zero training, zero attack data, per-law diagnosis — M2's taxonomy), not in PINN-style soft constraints. This reproduces the Grossmann/Krishnapriyan lesson in CPS security: physics priors pay off when physics is hard-to-learn or data is scarce; neither holds here.
-- λ sensitivity NOT swept (protocol locked λ=1); a λ∈{0.1,10} sweep + kinematic-structure encodings (predict Δw) are the exploratory follow-ups before the paper claims generality of the negative result.
+- λ sensitivity swept (exploratory): λ ∈ {0.1, 1, 10} × regimes {0.1%, 100%} — PINN ≈ twin everywhere (Δ AP ≤ 0.017, within noise). The negative attribution is robust to the hyperparameter. Remaining threat to generality: structural encodings (predict Δw, hard constraints) — future work, noted in paper.
 
 ## Open questions
 
