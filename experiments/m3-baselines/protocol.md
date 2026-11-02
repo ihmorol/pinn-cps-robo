@@ -16,3 +16,13 @@
 **Prediction (H2, falsifiable).** D1 ≥ D0a/D0b on every class in AP; D0a fails on reverse-light masquerade (value-plausible payload) while D1 catches it via freeze. If D0a catches reverse-light, the "value-plausible" claim in findings.md is wrong and must be revised.
 
 **Stages.** Stage 1 (this run): D0a/D0b/D1. Stage 2: D4 RF/XGBoost + D5 AE (capture-disjoint supervised splits). Stage 3 (M4): D2 PINN, D3 physics-free twin.
+
+## Stage 2 addendum (locked before results)
+
+**Detectors:** D4a Random Forest, D4b XGBoost (supervised, windowed features: raw signals + rolling mean/std over 10 frames, per attacked-ID stream); D5 autoencoder (one-class MLPRegressor trained on ambient frames only; reconstruction error = score).
+
+**Splits (capture-disjoint).** For classes with 3 captures: train on captures _1, _2 (+ all ambient for benign); test on capture _3. Coolant (1 capture): temporal split within the capture (first 60% of labeled frames train / last 40% test). AE trains on ambient only — no attack data.
+
+**Metrics:** unchanged (AP, recall@ambient-q0.999, FPR on benign test frames).
+
+**Predictions.** D4 ≈ D1 on payload-exceeding classes (frozen payloads are easy); the discriminating comparisons are (a) generalization to the held-out capture and (b) FPR on benign frames. D5 expected to trade recall for FPs on benign maneuvers. If D4 generalizes perfectly with zero FPs, the case for physics residuals weakens to interpretability/robustness arguments — reported either way.
