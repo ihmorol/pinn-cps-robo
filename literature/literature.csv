@@ -1,0 +1,51 @@
+id,cite,year,role,verified,status
+S01,Verma et al. ROAD guide (PLOS ONE),2024,dataset+problem statement,yes,core
+S02,Moriano et al. signal clustering (AutoSec),2022,masquerade detector,yes,core
+S03,Marfo et al. graph ML masquerade (TIFS),2025,SOTA on ROAD,yes,position-against
+S04,Moriano et al. lightweight IDS benchmark (JISA),2026,no-single-method finding,yes,core
+S05,Rajapaksha et al. AI-IDS survey (CSUR),2023,survey,yes,background
+S06,Rajapaksha et al. CAN-MIRGU (VehicleSec),2024,dataset,yes,backup-data
+S07,Song et al. AutoHack (USENIX VehicleSec),2026,dataset+eval norms,yes,complementary-data
+S08,Kidmouse & Meng can-sleuth (EICC),2024,dataset audit,yes,eval-norms
+S09,ROAD dataset (Zenodo 10462796),2020,primary dataset,yes,in-use
+S10,SynCAN (ETAS),2021,synthetic dataset,yes,unit-tests
+S11,Lee et al. OTIDS/Car-Hacking (PST),2017,flawed dataset,yes,counterexample
+S12,Neto et al. CICIoV2024 (IoT),2024,dataset,yes,backup
+S13,Mueter et al. structured anomaly detection,2010,early lineage,yes,background
+S14,Wasicek et al. CAID (escar),2017,physics-model IDS,yes,prior-art
+S15,Ganesan et al. sensor consistency (SAE WCX),2017,consistency IDS,yes,prior-art
+S16,Li et al. sensor correlation (CCS poster),2017,consistency IDS,yes,prior-art
+S17,Sharma et al. Pearson correlation (VTC),2018,consistency IDS,yes,prior-art
+S18,Guo et al. consistency+frequency (TVT),2019,consistency IDS,yes,prior-art
+S19,He et al. sensor redundancy (DAC),2020,learned residual,yes,prior-art
+S20,Fenzl et al. targeted CAN attacks (ARES),2021,relationships IDS,yes,prior-art
+S21,Rajapaksha et al. CAN-CID GRU (CyCon),2022,context IDS,yes,prior-art
+S22,Bian et al. UKF+ML (ICINCO),2025,hybrid filter,yes,prior-art
+S23,Guo et al. physics-guided EV (TTE),2021,physics-guided NN,yes,prior-art
+S24,Rahman et al. digital twin powertrain (arXiv),2026,nearest competitor,yes,position-against
+S25,Pasqualetti et al. (IEEE TAC),2013,classical CPS theory,yes,foundations
+S26,Giraldo et al. physics-based survey (CSUR),2018,survey,yes,foundations
+S27,Raissi et al. PINN (JCP),2019,PINN foundations,yes,foundations
+S28,Karniadakis et al. PIML (Nat Rev Phys),2021,PIML review,yes,foundations
+S29,Jabbari Zideh et al. PI-AE (arXiv),2023,physics-helps evidence,yes,evidence
+S30,Nafees et al. CLDPhy (SmartGridComm),2022,physics-helps evidence,yes,evidence
+S31,Krishnapriyan et al. PINN failure modes (NeurIPS),2021,critic,yes,design-guard
+S32,Wang et al. NTK (JCP),2022,critic,yes,design-guard
+S33,Grossmann et al. PINN vs FEM (ICLR),2024,critic,yes,design-guard
+S34,Naser PINN flaws (C&IE),2025,critic,yes,design-guard
+S35,Ghosh et al. tele-driving PI detection (IEEE Access),2025,adjacent PINN,yes,related
+S36,Senthilkumar & Anbalagan cPINN FHE (JESA),2026,PINN-on-CAN near-miss,metadata-only,retrieve-before-writing
+S37,Alsaadi et al. PP-IDS (Appl Sci),2026,describes S36,yes,related
+S38,Blevins et al. time-based benchmark (AutoSec),2021,AUC-PR norm on ROAD,yes,eval-norms
+S39,Kaufman et al. leakage (TKDD),2012,eval-norms,yes,protocol
+S40,Kapoor & Narayanan leakage (Patterns),2023,eval-norms,yes,protocol
+S41,Arp et al. dos and donts (USENIX Sec),2022,eval-norms,yes,protocol
+S42,Arp et al. pitfalls (CACM),2024,eval-norms,yes,protocol
+S43,Axelsson base-rate (TISSEC),2000,eval-norms,yes,protocol
+S44,Tatbul et al. range-based P/R (NeurIPS),2018,metrics,yes,protocol
+S45,Kim et al. point-adjust flaw (AAAI),2022,metrics,yes,protocol
+S46,Wu & Keogh benchmark flaws (TKDE),2020,metrics,yes,protocol
+S47,Shin et al. HAI 1.0 (CSET),2020,ICS fallback dataset,yes,fallback
+S48,Sobrin Hidalgo ROS 2 attack rosbags (Zenodo),2025,RQ4 cross-domain,yes,optional
+S49,Fraga Da Silva et al. ROS2 DoS IDS (IJCNN),2025,RQ4 analogue,yes,optional
+S50,Fraga Da Silva et al. physics-based ROS2 survey (OJIES),2026,RQ4 survey,yes,optional

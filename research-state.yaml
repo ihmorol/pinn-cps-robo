@@ -1,0 +1,36 @@
+project: pinn-cps-robo
+question: Do vehicle-kinematics consistency residuals detect CAN masquerade attacks that data-driven detectors miss, and are gains attributable to physics?
+phase: M2-CAN            # M1 data | M2 taxonomy | M3 baselines | M4 pin | M5 paper
+updated: 2026-11-03T00:55Z
+
+dataset:
+  road:
+    status: downloaded+extracted+md5-verified
+    path: data/raw/zenodo-10462796/extracted/road
+    decoded_csvs: signal_extractions/{ambient,attacks}/*.csv   # per-row Label 0/1
+    dbc: signal_extractions/DBC/anonymized.dbc                 # 105 IDs, signal names anonymized
+    id_map:                       # recovered from attacks/metadata.json injection_ids
+      wheel_speeds_x4: 0x6e0      # correlated+masquerade injection_id
+      speedometer_reverse_gear: 0xd0
+      coolant_temp: 0x4e7
+    masquerade_csvs_available: 13 # all 13 masquerade captures pre-decoded
+
+hypotheses:
+  H1: masquerade/fabrication captures violate inter-signal kinematic consistency while respecting per-signal ranges
+  H2: physics-residual detector beats payload/rate statistics on stealthy classes (AUC-PR, per-class recall)
+  H3: physics constraint buys lower FPs than equal-capacity physics-free twin (attribution)
+
+next_actions:
+  - M2: tidy panel builder (src/) + ambient residual envelopes per capture
+  - M2: physics taxonomy table — which consistency law each attack class violates (incl. fabrication variants)
+  - literature supplement scouts (early 2004-2013 + 2025-2026) — retry
+  - code: src/pinn_cps_robo/physics.py residual functions + pytest
+
+constraints:
+  - public data only, no new attack generation
+  - CPU-only
+  - docs stay SHORT (owner reviews them)
+  - publisher PDFs stay out of git
+
+repo: https://github.com/ihmorol/pinn-cps-robo
+loop: cron every 20 min (automation-4c72d9f3)
