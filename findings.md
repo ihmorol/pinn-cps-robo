@@ -22,6 +22,28 @@
 - Per-row Label column aligns exactly with published injection intervals (inside={1}, outside={0}) → ground truth exact.
 - Implication: ROAD's masquerade payloads violate inter-signal consistency grossly, not subtly — the interesting question shifts to the fabrication variants ("flam", mutually consistent values) and to FP behavior on benign maneuvers.
 
+## M2-CAN results (2026-11-03, experiments/m2-physics-taxonomy/)
+
+Physics taxonomy of the 13 masquerade captures (inside/outside max-residual ratios; benign floors from the same captures' benign parts):
+
+| Attack class (n) | L1 inter-wheel | L2 speedo↔wheel | L3 continuity | L5/L6 value envelope | L7 freeze (inv) |
+|---|---|---|---|---|---|
+| wheel-speed masquerade (3) | **178–585×** | 84–659× | **258–1024×** | — | — |
+| speedometer masquerade (3) | — | **~165×** | — | 1.31× (mild) | 6.3–10.6× |
+| reverse-light masquerade (6) | — | — | — | — (value-plausible!) | **9.9–42.8×** |
+| coolant masquerade (1) | — | — | — | **1.69×** (255 vs ambient 151) | — |
+
+- **H1 CONFIRMED (masquerade classes): every class violates ≥1 physics law inside its interval only; benign parts respect all laws.** Benign noise floors: L1 ≤112, L2 ≤94, L3 ≤62.
+- Crown jewel: reverse-light masquerades are value-plausible AND frequency-identical — caught only by the freeze/dynamics law (speedo frozen while wheels move). This is the "physics sees what statistics cannot" headline.
+- Accelerator captures (4): no injection, all labels 0 → C-C benign-stress material for M3.
+- Fabrication (non-masquerade) variants remain raw-only — decode in M3 if time; noted limitation.
+
+## Lessons (experiment refinements — logged in results)
+
+- Only the attacked ID's rows carry Label=1 → attack intervals must be derived globally (any-ID label-1 rows) and splits done by TIME (±0.05 s margin).
+- One boundary frame per interval end carries payload with Label=0 → time-split with margin absorbs it; envelope laws should compare vs AMBIENT envelope, not within-capture outside.
+- L2 relation noise floor ~90 units comes from interpolation misalignment between 0x6e0 and 0xd0 grids → M3 must use frame-aware alignment (or evaluate L2 on the speedo's own grid).
+
 ## Open questions
 
 - Exact scaling of wheel-speed/speedometer/coolant signals under ROAD's obfuscation (identify from ambient data).

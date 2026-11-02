@@ -15,3 +15,9 @@
 - Early foundations scout: 11 verified works (2007-2017); correction: "Experimental Security Analysis of a Modern Automobile" = Koscher et al. 2010 (S&P), not Miller-Valasek. No pre-2017 physics-based CAN IDS — analytical lineage starts at CAID 2017 (claim holds).
 - 2025-2026 scout: 10 verified works; novelty threat assessment NEGATIVE (nothing occupies physics-residual + ROAD masquerade + external-baseline ablation). Design implication adopted: include Moriano et al. 2026's four unsupervised baselines in the ablation ladder. SoK (NDSS 2027) = taxonomy to position against.
 - Tracker now 68 entries (S01-S68). Survey updated with addendum [51]-[68].
+
+## 2026-11-03 (tick 3) — M2 physics taxonomy: H1 CONFIRMED
+- Implemented src/pinn_cps_robo/{physics,data}.py + 5 passing tests.
+- Protocol locked pre-results (research(protocol) commit); two runner bugs found+fixed mid-run (label semantics: only attacked ID carries label 1; boundary frames) — logged as refinements, prediction unchanged.
+- Result: all 13 masquerade captures violate >=1 physics law inside interval only. Classes separable by law: wheel-masq -> L1/L3 (178-1024x); speedo-masq -> L2 (165x) + freeze; reverse-light-masq -> freeze ONLY (value-plausible, 10-43x); coolant -> envelope (1.69x).
+- Benign floors: L1<=112, L2<=94, L3<=62. Accelerator captures = benign stress set for M3.
