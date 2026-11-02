@@ -1,0 +1,19 @@
+# Core
+numpy>=1.26
+pandas>=2.1
+scipy>=1.11
+matplotlib>=3.8
+
+# Classical baselines (charter: RF, XGBoost, Autoencoder)
+scikit-learn>=1.4
+xgboost>=2.0
+
+# PINN
+torch>=2.2
+
+# CAN decoding (only needed if masquerade captures lack pre-decoded CSVs — see dataset-assessment M1 checklist)
+# python-can>=4.3
+# cantools>=39
+
+# Quality
+pytest>=8.0
