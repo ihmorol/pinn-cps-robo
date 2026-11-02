@@ -1,4 +1,9 @@
-"""M3 stage 1: D0a range, D0b const-run, D1 physics — frame-level on attacked-ID streams."""
+"""M3 stage 1: D0a range, D0b const-run, D1 physics — frame-level, per-stream thresholds.
+
+v3 refinements (logged): ambient floors computed within each capture then
+aggregated (cross-capture ops are meaningless — t restarts); L2d dynamics law
+(|ds6 - a*dwm|) replaces the failed binary freeze law; per-stream thresholds.
+"""
 import sys
 from pathlib import Path
 import numpy as np
@@ -6,7 +11,7 @@ import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
 from pinn_cps_robo.data import load_capture, list_captures
-from pinn_cps_robo.detectors import ambient_reference, score_range, score_physics, _roll_std
+from pinn_cps_robo.detectors import ambient_reference, score_range, score_physics
 from pinn_cps_robo.evaluate import ap_score, threshold_at, recall_fpr
 
 ROAD = Path(sys.argv[1])
@@ -14,6 +19,7 @@ Q = 0.999
 CLASS_STREAM = {"correlated": "wheel", "max_speedometer": "speedo", "reverse_light": "speedo",
                 "max_engine_coolant": "coolant", "accelerator": "wheel"}
 RUN_SIG = {"wheel": "s1", "speedo": "s6", "coolant": "s2"}
+STREAMS = ("wheel", "speedo", "coolant")
 
 
 def runs(v):
@@ -26,48 +32,44 @@ def runs(v):
 
 
 def stream_scores(fr, ref, stream):
+    f = fr[stream]
     out = {}
-    out["D0a_range"] = score_range(fr, ref, stream)
+    out["D0a_range"] = score_range(f, ref, stream)
     sig = RUN_SIG[stream]
-    r = runs(fr[sig].to_numpy(dtype=float))
+    r = runs(f[sig].to_numpy(dtype=float))
     out["D0b_construn"] = r / max(ref[f"max_run_{stream}"], 1.0)
-    out["D1_physics"] = score_physics(fr, ref, stream, cap_frames=fr)
+    out["D1_physics"] = score_physics(f, ref, stream, cap_frames=fr)
     return out
 
 
 def main():
-    # ambient reference + ambient scores
-    ref = {}
-    amb_scores = {"D0a_range": [], "D0b_construn": [], "D1_physics": []}
-    amb_frames = {k: [] for k in ("wheel", "speedo", "coolant")}
+    amb_frames = {k: [] for k in STREAMS}
+    amb_caps = []
     for cap in list_captures(ROAD, "ambient"):
+        if not cap.stem.startswith("ambient_"):
+            continue  # ambient/ duplicates attack captures; the 12 ambient_* files are calibration
         fr = load_capture(cap)
-        for k in amb_frames:
+        amb_caps.append(fr)
+        for k in STREAMS:
             if len(fr[k]):
                 amb_frames[k].append(fr[k])
-    merged = {k: pd.concat(v, ignore_index=True).sort_values("t").reset_index(drop=True)
-              for k, v in amb_frames.items() if v}
-    ref = ambient_reference(merged)
-    for stream in ("wheel", "speedo", "coolant"):
-        if stream not in merged or not len(merged[stream]):
-            continue
-        # per-capture ambient scores (avoid cross-capture run/interp artifacts)
-        for cap in list_captures(ROAD, "ambient"):
-            fr = load_capture(cap)
-            if not len(fr[stream]):
+    ref = ambient_reference(amb_caps)
+    print("ref:", {k: (round(v, 4) if isinstance(v, float) else v)
+                   for k, v in ref.items() if k.startswith(("floor", "alpha", "motion", "speedo_std", "max_run"))})
+
+    # per-stream ambient scores -> per-stream thresholds
+    amb_scores = {det: {s: [] for s in STREAMS} for det in ("D0a_range", "D0b_construn", "D1_physics")}
+    for fr in amb_caps:
+        for s in STREAMS:
+            if not len(fr[s]):
                 continue
-            ss = stream_scores(fr, ref, stream)
-            for k, v in ss.items():
-                amb_scores[k].append(pd.Series(v, index=fr[stream].index).dropna().to_numpy())
-    amb_flat = {k: np.concatenate(v) for k, v in amb_scores.items()}
-    ref["max_run_wheel"] = 1.0
-    # ambient max run per stream/signal (for D0b normalization)
-    for stream in ("wheel", "speedo", "coolant"):
-        if stream in merged and len(merged[stream]):
-            ref[f"max_run_{stream}"] = float(runs(merged[stream][RUN_SIG[stream]].to_numpy(dtype=float)).max())
-    thr = {k: threshold_at(v, Q) for k, v in amb_flat.items()}
-    print("ambient frames:", {k: len(v) for k, v in amb_flat.items()})
-    print("thresholds(q0.999):", {k: round(v, 3) for k, v in thr.items()})
+            for det, v in stream_scores(fr, ref, s).items():
+                amb_scores[det][s].append(pd.Series(v, index=fr[s].index).dropna().to_numpy())
+    thr = {det: {s: threshold_at(np.concatenate(v), Q) if v else np.inf
+                 for s, v in d.items()} for det, d in amb_scores.items()}
+    n_amb = {s: sum(len(v) for v in amb_scores["D0a_range"][s]) for s in STREAMS}
+    print("ambient frames per stream:", n_amb)
+    print("thresholds(q0.999):", {d: {s: round(x, 4) for s, x in t.items()} for d, t in thr.items()})
 
     rows = []
     for cap in list_captures(ROAD, "attacks"):
@@ -82,11 +84,11 @@ def main():
         ss = stream_scores(fr, ref, stream)
         y = f["label"].to_numpy(dtype=int)
         for det, s in ss.items():
-            s = pd.Series(s, index=f.index).dropna()
-            yy = y[[f.index.get_loc(i) for i in s.index]] if len(s) != len(f) else y
-            ap = ap_score(yy, s.to_numpy())
-            rec, fpr = recall_fpr(yy, s.to_numpy(), thr[det])
-            rows.append((cap.stem, cls, det, ap, rec, fpr, int(len(s)), int(yy.sum())))
+            sv = pd.Series(s, index=f.index).dropna()
+            yy = y[[f.index.get_loc(i) for i in sv.index]]
+            ap = ap_score(yy, sv.to_numpy())
+            rec, fpr = recall_fpr(yy, sv.to_numpy(), thr[det][stream])
+            rows.append((cap.stem, cls, det, ap, rec, fpr, int(len(sv)), int(yy.sum())))
 
     res = pd.DataFrame(rows, columns=["capture", "class", "detector", "AP", "recall@thr", "FPR_benign", "n", "n_attack"])
     out = Path(__file__).parent / "results"
@@ -94,10 +96,9 @@ def main():
     res.to_csv(out / "stage1.csv", index=False)
     pd.set_option("display.float_format", lambda v: f"{v:.3g}")
     print("\n=== per class x detector (pooled over captures) ===")
-    for cls in res["class"].unique():
-        sub = res[res["class"] == cls]
+    for cls in sorted(res["class"].unique()):
         for det in ["D0a_range", "D0b_construn", "D1_physics"]:
-            r = sub[sub["detector"] == det]
+            r = res[(res["class"] == cls) & (res["detector"] == det)]
             if len(r):
                 print(f"{cls:20s} {det:14s} AP={r.AP.mean():.4f} recall={r['recall@thr'].mean():.4f} "
                       f"FPR_benign={r.FPR_benign.mean():.5f} n={int(r.n.sum())}")

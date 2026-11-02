@@ -21,3 +21,8 @@
 - Protocol locked pre-results (research(protocol) commit); two runner bugs found+fixed mid-run (label semantics: only attacked ID carries label 1; boundary frames) — logged as refinements, prediction unchanged.
 - Result: all 13 masquerade captures violate >=1 physics law inside interval only. Classes separable by law: wheel-masq -> L1/L3 (178-1024x); speedo-masq -> L2 (165x) + freeze; reverse-light-masq -> freeze ONLY (value-plausible, 10-43x); coolant -> envelope (1.69x).
 - Benign floors: L1<=112, L2<=94, L3<=62. Accelerator captures = benign stress set for M3.
+
+## 2026-11-03 (tick 4) — M3 stage 1 complete
+- Implemented D0a/D0b/D1 + eval; 3 protocol refinements logged (per-capture floors, L2d dynamics law replacing failed binary freeze, per-stream thresholds).
+- Results: wheel/speedo/coolant masquerades caught (AP 0.97-1.0, recall 1.0); D0b dead (stationary ambient runs 106k frames).
+- Reverse-light masquerade evades ALL detectors (best AP 0.49): injector live-patches the light bit, snapshot dynamically consistent, gear signal unidentifiable in anonymized DBC -> honest boundary finding; actuator-semantics needs real DBC (future work).

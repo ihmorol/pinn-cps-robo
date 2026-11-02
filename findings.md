@@ -44,6 +44,29 @@ Physics taxonomy of the 13 masquerade captures (inside/outside max-residual rati
 - One boundary frame per interval end carries payload with Label=0 → time-split with margin absorbs it; envelope laws should compare vs AMBIENT envelope, not within-capture outside.
 - L2 relation noise floor ~90 units comes from interpolation misalignment between 0x6e0 and 0xd0 grids → M3 must use frame-aware alignment (or evaluate L2 on the speedo's own grid).
 
+## M3 stage 1 results (2026-11-03, experiments/m3-baselines/)
+
+Frame-level, ambient-only calibration (q0.999 per stream), 1.05M wheel / 0.99M speedo / 99k coolant benign frames:
+
+| Class | D0a range AP/rec | D0b const-run | D1 physics AP/rec |
+|---|---|---|---|
+| wheel masquerade (3) | 0.999 / 1.00 | AP 0.995, rec 0 | 0.999 / 1.00 |
+| speedometer masquerade (3) | 0.9995 / 1.00 | AP 0.42, rec 0 | 0.995 / 1.00 |
+| coolant masquerade (1) | 1.00 / 1.00 | AP 0.10, rec 0 | 0.966 / 1.00 |
+| **reverse-light masquerade (6)** | **0.49 / 0.00** | **0.34 / 0.00** | **0.44 / 0.00** |
+
+- D0b (const-run) is dead on ROAD: ambient stationary periods give runs up to 106k frames → neutralized. Honest baseline failure.
+- **Reverse-light masquerade evades every current detector — genuine boundary finding.** Failure analysis: the injector live-patches the light bit (counter keeps rolling), the window is short and the motion steady, so the patched frame is a *dynamically consistent snapshot* — kinematics cannot flag it. Gear↔light law untestable: the gear signal is not identifiable from the anonymized DBC (s1=counter, s4 not cleanly gear; naive law fails 48.6% on ambient).
+- Implication for the paper: physics catches 3/4 masquerade classes; the state-bit class needs actuator-model semantics (real DBC) or other channels — the honest scope line.
+- D0a ≈ D1 on the 3 payload-exceeding classes (both catch the out-of-envelope values); the physics-vs-data question moves to stage 2 (RF/XGB/AE, capture-disjoint) and M4 (FP behavior on benign stress).
+
+## Lessons (M3 failures → fixes, all logged in git history)
+
+1. Ambient reference must be computed WITHIN each capture (t restarts per capture; merged-sort interleaves them → floor_L3 inflated 758→10765 by cross-capture jumps).
+2. Binary freeze law failed: ambient idling legitimately freezes the display (std_q=0) → replaced by L2d dynamics law |Δs6 − α·Δwm| (floor 276).
+3. Only the attacked ID's rows carry Label=1; one boundary frame per interval carries payload with Label=0 → time-split with ±0.05s margin.
+4. Publisher ships duplicate CSVs of attack captures inside ambient/ → calibration filtered to the 12 canonical ambient_* files.
+
 ## Open questions
 
 - Exact scaling of wheel-speed/speedometer/coolant signals under ROAD's obfuscation (identify from ambient data).
