@@ -162,6 +162,35 @@ The project retains a cross-domain check: the same "does the plant obey the comm
 
 ---
 
+### Addendum (2026-11-03): early foundations and 2025-2026 update
+
+Supplement scout rounds (verified via Crossref/arXiv/publisher retrieval; same protocol).
+
+**Early foundations (2007–2017).** The masquerade concept traces to Hoppe & Dittmann's 2007 work on faking in-vehicle CAN communication [51], with practical attacks and first IDS proposals in Hoppe et al. [52]; the vehicle-threat roadmap starts with Larson & Nilsson [53] and Wampler et al. [54]; the canonical experimental compromise is Koscher et al., IEEE S&P 2010 [55] (note: this title is Koscher et al., not Miller–Valasek); Kleberger et al. wrote the widely cited early survey [56]; Müter & Asaj's entropy IDS [57] is the earliest statistical CAN detector (sibling of [13]); Miller & Valasek's public tooling [58], [59] industrialized the threat; sequence-based detection arrives with Taylor et al.'s LSTM [60] and Markovitz & Wool's per-field statistical models [61]. No pre-2017 physics-based CAN IDS was found — the analytical lineage (Section 5.1) genuinely starts at CAID [14].
+
+**2025–2026 update.** Serag et al.'s SoK (arXiv:2510.02960, NDSS 2027 to appear) systematizes CAN security knowledge and becomes the taxonomy to position against [62]. Physics-informed detection exists at the sector's edges but not on CAN frames: Philip et al. apply physics-informed temporal learning to vehicle *platoons* (simulation) [63] and Bourouis et al. build a physics-informed edge IDS for IoV *BSM* misbehavior [64]; PCNA-IDS [65] and ACHILLES [66] are data-driven (ACHILLES benchmarks across ROAD and others, masquerade coverage unconfirmed). Longari et al. document adversarial evasion of CAN IDS [67], and Althunayyan et al. survey learning-based automotive IDS with masquerade-type stealth coverage [68]. **Threat assessment: no work occupies physics-residual × ROAD masquerade × external-baseline ablation.** Design implication adopted: the ablation ladder must include the four external unsupervised baselines that Moriano et al. replay on ROAD masquerade [4].
+
+[51] Hoppe, Dittmann, "Vortäuschen fahrzeuginterner CAN-Kommunikation," VDI/VW Automotive Security, 2007.
+[52] Hoppe, Kiltz, Dittmann, "Security threats to automotive CAN networks — practical examples and selected short-term countermeasures," SAFECOMP (RESS journal version 2011), 2008.
+[53] Larson, Nilsson, "Securing vehicles against cyber attacks," CSIIRW, ACM, 2008.
+[54] Wampler, Fu, Zhu, et al., "Security threats and countermeasures for intra-vehicle networks," IEEE IAS, 2009.
+[55] Koscher, Czeskis, Roesner, et al., "Experimental security analysis of a modern automobile," IEEE S&P, 2010.
+[56] Kleberger, Olovsson, Jonsson, "Security aspects of the in-vehicle network in the connected car," IEEE Intelligent Vehicles Symposium, 2011.
+[57] Müter, Asaj, "Entropy-based anomaly detection for in-vehicle networks," IEEE Intelligent Vehicles Symposium, 2011.
+[58] Miller, Valasek, "Adventures in automotive networks and control units," DEF CON 21 / IOActive, 2013.
+[59] Miller, Valasek, "A survey of remote automotive attack surfaces," Black Hat USA / IOActive, 2014.
+[60] Taylor, Leblanc, Japkowicz, "Anomaly detection in automobile control network data with LSTM networks," IEEE DSAA, 2016.
+[61] Markovitz, Wool, "Field classification, modeling and anomaly detection in unknown CAN bus networks," Vehicular Communications, 2017.
+[62] Serag, et al., "SoK: kicking CAN down the road — systematizing CAN security knowledge," arXiv:2510.02960 (NDSS 2027 to appear), 2025.
+[63] Philip, et al., "Physics-informed temporal learning for cyber attack detection in vehicle platoons," IEEE ISI, 2026.
+[64] Bourouis, et al., "Temporal-window-aware physics-informed edge IDS for multi-class IoV misbehavior detection," Vehicles 8(9):215, 2026.
+[65] Qu, et al., "PCNA-IDS: an integrated lightweight intrusion detection system in Internet of Vehicles with federated contrastive learning and differential privacy," Knowledge-Based Systems 336:115346, 2026.
+[66] Mowla, et al., "ACHILLES: a machine learning framework for explainable and generalized automotive intrusion detection system," IEEE Access, 2026.
+[67] Longari, et al., "Assessing the resilience of automotive intrusion detection systems to adversarial manipulation," ACM (arXiv:2506.10620), 2025.
+[68] Althunayyan, et al., "A survey of learning-based intrusion detection systems for in-vehicle network," arXiv:2505.11551, 2025.
+
+---
+
 ### Verification ledger (working-document appendix)
 
 Corpus provenance: two verification scouts (CAN/ICS prior art; datasets + evaluation norms), plus direct retrieval of the flagged cPINN-CAN threat (full text of [37], which resolves [36]) and cover-to-cover reads of [7], [6], [8] (local PDFs in `docs/papers/`). Domain-generic references ([25]–[34], [39]–[46]) carried over from the previous survey round, where each was individually verified. Metadata-level items pending direct retrieval: [36] (verified only as described in [37]'s reference list and related-work section — retrieve before writing), [12] (title from dataset page + catalog records), [11] (authors/venue verified; title from common citation practice). Excluded as unverifiable: "Temporal-Window-Aware Physics-Informed Edge IDS for Multi-Class IoV" (snippet only), M-CAN/B-CAN/can-train-and-test (partial provenance only), WeepingCAN/MAuth-CAN (snippet level). Known caveats carried into claims: ROAD masquerade captures are simulated post-processing and the vehicle ran on a dynamometer [1]; ROAD frame order is intentionally obfuscated (timing caveat) [1].

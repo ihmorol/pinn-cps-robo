@@ -49,3 +49,21 @@ S47,Shin et al. HAI 1.0 (CSET),2020,ICS fallback dataset,yes,fallback
 S48,Sobrin Hidalgo ROS 2 attack rosbags (Zenodo),2025,RQ4 cross-domain,yes,optional
 S49,Fraga Da Silva et al. ROS2 DoS IDS (IJCNN),2025,RQ4 analogue,yes,optional
 S50,Fraga Da Silva et al. physics-based ROS2 survey (OJIES),2026,RQ4 survey,yes,optional
+S51,Hoppe & Dittmann CAN masquerade precursor,2007,earliest masquerade concept,yes,foundations
+S52,Hoppe et al. CAN threats+IDS (SAFECOMP),2008,early attacks+IDS,yes,foundations
+S53,Larson & Nilsson vehicle security (CSIIRW),2008,threat roadmap,yes,foundations
+S54,Wampler et al. intra-vehicle threats (IAS),2009,threat taxonomy,yes,foundations
+S55,Koscher et al. experimental auto analysis (S&P),2010,canonical compromise,yes,foundations
+S56,Kleberger et al. in-vehicle security survey (IV),2011,early survey,yes,foundations
+S57,Mueter & Asaj entropy IDS (IV),2011,earliest statistical IDS,yes,foundations
+S58,Miller & Valasek adventures (DEF CON),2013,public tooling,yes,foundations
+S59,Miller & Valasek remote surfaces (BlackHat),2014,remote attack survey,yes,foundations
+S60,Taylor et al. LSTM CAN anomaly (DSAA),2016,sequence IDS,yes,prior-art
+S61,Markovitz & Wool field models (VehCom),2017,statistical per-field,yes,prior-art
+S62,Serag et al. SoK CAN (arXiv/NDSS27),2025,taxonomy to position against,yes,position-against
+S63,Philip et al. physics-informed platoons (ISI),2026,PI but not CAN,yes,related
+S64,Bourouis et al. PI edge IDS IoV (Vehicles),2026,PI but BSM not CAN,yes,related
+S65,Qu et al. PCNA-IDS (KBS),2026,data-driven IoV,yes,related
+S66,Mowla et al. ACHILLES (IEEE Access),2026,ML IDS incl ROAD,yes,related
+S67,Longari et al. adversarial evasion,2025,evasion of CAN IDS,yes,related
+S68,Althunayyan et al. learning IDS survey,2025,survey,yes,background
