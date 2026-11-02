@@ -40,3 +40,7 @@
 
 ## 2026-11-03 (tick 6b) — lambda sweep: negative result robust
 - lambda in {0.1,1,10} x regimes {0.1%,100%}: no physics advantage anywhere (delta AP <= 0.017). M4 closed.
+
+## 2026-11-03 (tick 7) — M5 opened: figures + draft v0
+- 4 figures generated (timeline, PR curves, attribution regimes, taxonomy heatmap) -> paper/figures/.
+- paper/drafts/paper-v0.md: full workshop-length draft, humanizer-audited, all 20 citations from the verified tracker. Framing: measurement paper (where physics pays and where it does not).
