@@ -67,6 +67,20 @@ Frame-level, ambient-only calibration (q0.999 per stream), 1.05M wheel / 0.99M s
 3. Only the attacked ID's rows carry Label=1; one boundary frame per interval carries payload with Label=0 → time-split with ±0.05s margin.
 4. Publisher ships duplicate CSVs of attack captures inside ambient/ → calibration filtered to the 12 canonical ambient_* files.
 
+## M3 stage 2 results (2026-11-03, capture-disjoint splits)
+
+| Class | RF AP/rec | XGB AP/rec | AE (ambient-only) AP/rec | D1 physics (stage 1) |
+|---|---|---|---|---|
+| wheel masquerade | 0.999 / 1.0 | 0.999 / 1.0 | 0.997 / 1.0 | 0.999 / 1.0 |
+| speedometer masquerade | 1.0 / 1.0 | 1.0 / 1.0 | 0.99 / 0.001 | 0.995 / 1.0 |
+| coolant masquerade | 1.0 / 1.0 | **0.165 / 0** (156 train frames) | 0.747 / 1.0 | 0.966 / 1.0 |
+| reverse-light masquerade | 0.366 / 0 | 0.629 / 0 | **0.975 / 0.003** | 0.44 / 0 |
+
+- Supervised ML generalizes across captures and ties physics on the 3 payload-exceeding classes (as predicted: frozen payloads are easy).
+- **One-class AE (never saw attacks) ranks the physics-evading reverse-light class at AP 0.975** — but recall at the ambient-q0.999 operating point is ~0. The class is rankable, not thresholdable: the operating-point/PR-curve story matters more than single numbers.
+- XGB collapses on coolant (156 training frames) where physics needed no attack data — the small-sample argument for model-based detection.
+- Paper implication: report PR curves + multiple operating points, never single recall numbers; physics vs ML differentiation lives in (a) no-attack-data requirements, (b) small-sample robustness, (c) FP behavior on benign stress (M4).
+
 ## Open questions
 
 - Exact scaling of wheel-speed/speedometer/coolant signals under ROAD's obfuscation (identify from ambient data).

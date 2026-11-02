@@ -26,3 +26,8 @@
 - Implemented D0a/D0b/D1 + eval; 3 protocol refinements logged (per-capture floors, L2d dynamics law replacing failed binary freeze, per-stream thresholds).
 - Results: wheel/speedo/coolant masquerades caught (AP 0.97-1.0, recall 1.0); D0b dead (stationary ambient runs 106k frames).
 - Reverse-light masquerade evades ALL detectors (best AP 0.49): injector live-patches the light bit, snapshot dynamically consistent, gear signal unidentifiable in anonymized DBC -> honest boundary finding; actuator-semantics needs real DBC (future work).
+
+## 2026-11-03 (tick 5) — M3 stage 2 complete
+- RF/XGB (capture-disjoint) tie physics on 3 payload classes; XGB collapses on coolant small-sample (0.165).
+- One-class AE ranks reverse-light class at AP 0.975 (recall ~0 at strict threshold) — the class physics+supervised miss is rankable by ambient-only reconstruction. Operating-point story > single numbers.
+- torch 2.9.1+cpu present; M4 unblocked.
