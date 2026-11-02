@@ -19,7 +19,7 @@ EPOCHS = {0.001: 40, 0.01: 30, 0.1: 15, 1.0: 5}
 
 def buildXY(f):
     """Wheel-stream supervised tuples: X=[w1..w4, s6i]_t -> Y=[w1..w4]_{t+1}."""
-    w = f.sort_values("t").reset_index(drop=True)
+    w = f["wheel"].sort_values("t").reset_index(drop=True)
     W = w[["s1", "s2", "s3", "s4"]].to_numpy(dtype=float)
     sd = f["speedo"].sort_values("t")
     s6i = np.interp(w["t"].to_numpy(), sd["t"].to_numpy(), sd["s6"].to_numpy())
@@ -32,6 +32,8 @@ def train_model(Xtr, Ytr, physics, alpha, amax, mu, sd_, epochs):
     torch.manual_seed(0)
     net = nn.Sequential(nn.Linear(5, 64), nn.ReLU(), nn.Linear(64, 64), nn.ReLU(), nn.Linear(64, 4))
     opt = torch.optim.Adam(net.parameters(), lr=1e-3)
+    mu_t = torch.tensor(mu, dtype=torch.float32)
+    sd_t = torch.tensor(sd_, dtype=torch.float32)
     X = torch.tensor((Xtr - mu) / sd_, dtype=torch.float32)
     Y = torch.tensor((Ytr - mu[:4]) / sd_[:4], dtype=torch.float32)
     ds = torch.utils.data.TensorDataset(X, Y)
@@ -41,11 +43,11 @@ def train_model(Xtr, Ytr, physics, alpha, amax, mu, sd_, epochs):
             pred = net(xb)
             loss = ((pred - yb) ** 2).mean()
             if physics:
-                wp = pred * sd_[:4] + mu[:4]                       # de-normalized wheels
+                wp = pred * sd_t[:4] + mu_t[:4]                    # de-normalized wheels
                 wm = wp.mean(dim=1)
-                s6 = xb[:, 4] * sd_[4] + mu[4]
+                s6 = xb[:, 4] * sd_t[4] + mu_t[4]
                 l_disp = (((wm * alpha - s6) / 1000.0) ** 2).mean()
-                dw = (wp - (xb[:, :4] * sd_[:4] + mu[:4])).abs()
+                dw = (wp - (xb[:, :4] * sd_t[:4] + mu_t[:4])).abs()
                 l_acc = (torch.relu(dw / amax - 1.0) ** 2).mean()
                 loss = loss + LAM * (l_disp + l_acc)
             opt.zero_grad(); loss.backward(); opt.step()

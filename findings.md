@@ -81,6 +81,23 @@ Frame-level, ambient-only calibration (q0.999 per stream), 1.05M wheel / 0.99M s
 - XGB collapses on coolant (156 training frames) where physics needed no attack data — the small-sample argument for model-based detection.
 - Paper implication: report PR curves + multiple operating points, never single recall numbers; physics vs ML differentiation lives in (a) no-attack-data requirements, (b) small-sample robustness, (c) FP behavior on benign stress (M4).
 
+## M4 attribution results (2026-11-03, experiments/m4-attribution/)
+
+One-step wheel forecasting, PINN (physics loss: display-tracking + accel limit, λ=1) vs identical physics-free twin, regimes {0.1%, 1%, 10%, 100%} of ambient:
+
+| Regime | Twin AP | PINN AP | Recall (both) | FPR accel (twin/pinn) |
+|---|---|---|---|---|
+| 0.1 % | **0.726** | 0.714 | 0.70 | 0.0 / 0.0 |
+| 1 % | 0.705 | 0.706 | 0.70 | 0.0 / 0.0 |
+| 10 % | 0.726 | 0.714 | 0.70 | 0.0 / 0.0 |
+| 100 % | 0.717 | 0.718 | 0.70 | 0.0 / 0.0 |
+
+- **P1 confirmed (parity at full data). P3 confirmed (attack AP ~0.7 both). P2 REJECTED: no small-data advantage — the twin is marginally better at 0.1%.**
+- Mechanism: the encoded physics (display↔wheel tracking) is a *linear relation* the twin learns from ~1,000 frames; 1M ambient frames make soft constraints redundant. The acceleration-limit prior adds nothing to one-step forecasting (data already respects it).
+- Both models handle the accelerator stress captures perfectly (FPR=0) — unusual-but-genuine dynamics are explained by learned dynamics regardless of the constraint.
+- **Attribution verdict (H3): negative for learned-physics on this task.** The physics value in this dataset lives in the ANALYTICAL residual formulation (D1: zero training, zero attack data, per-law diagnosis — M2's taxonomy), not in PINN-style soft constraints. This reproduces the Grossmann/Krishnapriyan lesson in CPS security: physics priors pay off when physics is hard-to-learn or data is scarce; neither holds here.
+- λ sensitivity NOT swept (protocol locked λ=1); a λ∈{0.1,10} sweep + kinematic-structure encodings (predict Δw) are the exploratory follow-ups before the paper claims generality of the negative result.
+
 ## Open questions
 
 - Exact scaling of wheel-speed/speedometer/coolant signals under ROAD's obfuscation (identify from ambient data).

@@ -31,3 +31,9 @@
 - RF/XGB (capture-disjoint) tie physics on 3 payload classes; XGB collapses on coolant small-sample (0.165).
 - One-class AE ranks reverse-light class at AP 0.975 (recall ~0 at strict threshold) — the class physics+supervised miss is rankable by ambient-only reconstruction. Operating-point story > single numbers.
 - torch 2.9.1+cpu present; M4 unblocked.
+
+## 2026-11-03 (tick 6) — M4 attribution: H3 NEGATIVE (physics constraint adds nothing)
+- PINN vs twin across 4 regimes: parity at 100% data, twin marginally better at 0.1% (AP 0.726 vs 0.714). P2 rejected.
+- Mechanism: encoded physics is linear + data abundant -> twin learns it immediately. Both models FPR=0 on accelerator stress.
+- Verdict: physics value on this dataset = analytical residual formulation (D1, M2 taxonomy), NOT learned soft constraints. Reproduces Grossmann/Krishnapriyan in CPS security.
+- Next: exploratory lambda sweep {0.1, 10} + delta-encoding before paper claims; then M5 paper assembly.
