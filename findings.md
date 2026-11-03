@@ -120,3 +120,7 @@ Attempted to close the reverse-light class with learned semantics: gradient boos
 ## Lesson (2026-11-03, fig5 attempt — discarded before reaching the paper)
 
 Building a pooled PR curve over all 12 reverse-light captures while RF had trained on captures 1-2 inflated RF's AP from 0.37 (leakage-free, capture 3 only) to 0.98. The pooled curve mixes training families into the test pool. Rule adopted: **every PR curve must be computed on a test set disjoint from its training set**; cross-mode transfer (train masq -> test fab) is a legitimate future experiment but needs its own pre-registered protocol. Fig5 discarded; the paper keeps the stage-2 split table.
+
+## Detection delay (2026-11-03, experiments/m3-baselines/run_delay.py — completes the locked M3 protocol)
+
+Median delay from injection onset to first flagged frame: **0.005–0.007 s (≈ one CAN frame at 100 Hz) for all three catchable classes**, identical for D0a and D1. Reverse-light: never detected inside the window+5s (6/6 captures, both detectors) — consistent with the §5.3 boundary. Paper claim upgraded: "detection within a single frame of onset" beats windowed statistical detectors that need seconds of history.

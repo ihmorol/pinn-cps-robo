@@ -68,3 +68,6 @@
 - All milestones complete; 5 passing tests; repo synced. Automation paused (owner-decision gate).
 - Deliverables: paper/latex/main.pdf (5 pp), draft v1, 68-ref verified tracker, full experiment logs with pre-registered protocols.
 - Re-open triggers: owner answers on title/framing/venue/limitations.
+
+## 2026-11-03 (post-conclusion tick) — detection delay reported
+- Median delay 0.005-0.007 s (one CAN frame) for all 3 catchable classes; reverse-light ND 6/6. Completes the M3 protocol's promised metric. Paper updated (both md + latex), recompiled clean.

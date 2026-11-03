@@ -55,7 +55,7 @@ Frame-level scores on the attacked-ID stream. All thresholds come from the 99.9t
 
 ### 5.2 Results
 
-Table 2 gives the stage-1 comparison. Range statistics and kinematic residuals both catch the three payload classes perfectly (AP 0.97–1.0, recall 1.0); the payload values exceed ambient envelopes, so a plain range check suffices there. The constancy heuristic is dead on this dataset — ambient stationary stretches produce runs of 106,279 identical frames, so it never fires. The interesting row is the reverse-light class: range statistics fail (AP 0.49), the constancy heuristic fails (0.34), and kinematic residuals fail (0.44).
+Table 2 gives the stage-1 comparison. Range statistics and kinematic residuals both catch the three payload classes perfectly (AP 0.97–1.0, recall 1.0); the payload values exceed ambient envelopes, so a plain range check suffices there. The constancy heuristic is dead on this dataset — ambient stationary stretches produce runs of 106,279 identical frames, so it never fires. Detection is immediate where detection happens: the median delay from injection onset to the first flagged frame is 0.005--0.007 s --- one CAN frame at 100 Hz --- for all three payload classes. The interesting row is the reverse-light class: range statistics fail (AP 0.49), the constancy heuristic fails (0.34), and kinematic residuals fail (0.44).
 
 ### 5.3 Why the reverse-light masquerade evades physics
 
