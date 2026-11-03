@@ -1,6 +1,9 @@
 project: pinn-cps-robo
 question: Do vehicle-kinematics consistency residuals detect CAN masquerade attacks that data-driven detectors miss, and are gains attributable to physics?
-phase: M5-PAPER (draft v1 + LaTeX done; owner review pending)
+phase: CONCLUDED (autonomous phase) — owner decisions pending
+# All milestones M1/M2/M2b/M3/M4 complete; draft v1 + compiled LaTeX pushed.
+# Re-activates on: owner answers (title/framing/venue/limitations) -> venue conversion + submission prep.
+# Optional future work (not blocking): fabrication-variant multi-step forecaster; hard-constraint PINN; ROS 2 cross-domain RQ4.
 updated: 2026-11-03T00:55Z
 
 dataset:

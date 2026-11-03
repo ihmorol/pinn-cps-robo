@@ -63,3 +63,8 @@
 
 ## 2026-11-03 (tick 11) — fig5 discarded (leakage trap caught)
 - Pooled PR curve attempt leaked training families into the test pool (RF AP 0.37 -> 0.98 inflated). Removed before touching the paper. Rule: split-respecting curves only.
+
+## 2026-11-03 (final tick) — autonomous phase CONCLUDED
+- All milestones complete; 5 passing tests; repo synced. Automation paused (owner-decision gate).
+- Deliverables: paper/latex/main.pdf (5 pp), draft v1, 68-ref verified tracker, full experiment logs with pre-registered protocols.
+- Re-open triggers: owner answers on title/framing/venue/limitations.
