@@ -14,6 +14,7 @@ ROAD = Path(sys.argv[1])
 Q = 0.999
 LAM = float(sys.argv[2]) if len(sys.argv) > 2 else 1.0
 REGIMES = [float(x) for x in sys.argv[3].split(",")] if len(sys.argv) > 3 else [0.001, 0.01, 0.1, 1.0]
+SEED = int(sys.argv[4]) if len(sys.argv) > 4 else 0
 EPOCHS = {0.001: 40, 0.01: 30, 0.1: 15, 1.0: 5}
 
 
@@ -29,7 +30,7 @@ def buildXY(f):
 
 
 def train_model(Xtr, Ytr, physics, alpha, amax, mu, sd_, epochs):
-    torch.manual_seed(0)
+    torch.manual_seed(SEED)
     net = nn.Sequential(nn.Linear(5, 64), nn.ReLU(), nn.Linear(64, 64), nn.ReLU(), nn.Linear(64, 4))
     opt = torch.optim.Adam(net.parameters(), lr=1e-3)
     mu_t = torch.tensor(mu, dtype=torch.float32)
@@ -82,7 +83,7 @@ def main():
     rows = []
     for frac in REGIMES:
         n = max(1000, int(frac * len(Xtr_pool)))
-        rng = np.random.default_rng(0)
+        rng = np.random.default_rng(SEED)
         idx = rng.choice(len(Xtr_pool), min(n, len(Xtr_pool)), replace=False)
         Xtr, Ytr = Xtr_pool[idx], Ytr_pool[idx]
         for name, phys in [("D3_twin", False), ("D2_pinn", True)]:
@@ -106,7 +107,8 @@ def main():
     res = pd.DataFrame(rows, columns=["train_frac", "model", "AP", "recall@thr", "FPR_amb", "FPR_accel"])
     out = Path(__file__).parent / "results"
     out.mkdir(exist_ok=True)
-    res.to_csv(out / "attribution.csv", index=False)
+    res["seed"] = SEED
+    res.to_csv(out / f"attribution_seed{SEED}.csv", index=False)
 
 
 if __name__ == "__main__":
