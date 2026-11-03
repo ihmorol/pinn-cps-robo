@@ -34,11 +34,17 @@ models/               trained model artifacts (not in git)
 reports/              generated figures, metric tables
 ```
 
-## Status
+## Status (2026-11-03)
 
-- **Done:** domain verification and decision (two scout rounds + threat check); literature survey; ROAD dataset assessment; evaluation protocol design.
-- **Next: M1-CAN** — download ROAD (556.7 MB), map the index-named signals to wheel-speed/speedometer/coolant channels, establish ambient residual envelopes.
-- Python ≥ 3.10; CPU-only (no GPU required — models are minutes-scale).
+**Autonomous research phase complete.** All milestones executed with pre-registered protocols:
+
+- **M1** — ROAD decoded; signal map recovered (0x6e0 = 4×wheel speeds, 0xd0 = speedometer/reverse-light, 0x4e7 = coolant) despite the shipped DBC not matching the published CSVs.
+- **M2/M2b** — physics taxonomy of all 26 injection captures: every class except reverse-light violates ≥1 consistency law (ratios 178–1273×).
+- **M3** — detector ladder: physics + range statistics catch 3/4 classes (recall 1.0, 0.1% ambient FPR, **detection within one CAN frame**); reverse-light evades all.
+- **M4** — PINN vs physics-free twin: parity across 4 data regimes and 3 loss weights (honest negative attribution).
+- **M5** — paper compiled: [paper/latex/main.pdf](paper/latex/main.pdf) (5 pp), draft v1, figures.
+
+Python ≥ 3.10; CPU-only. Reproduce: `python -m pytest tests/` then the scripts in `experiments/*/`.
 
 ## Reproducibility rules
 
