@@ -71,3 +71,11 @@
 
 ## 2026-11-03 (post-conclusion tick) — detection delay reported
 - Median delay 0.005-0.007 s (one CAN frame) for all 3 catchable classes; reverse-light ND 6/6. Completes the M3 protocol's promised metric. Paper updated (both md + latex), recompiled clean.
+
+## 2026-11-03 (rigor pass) — adversarial self-review, 10 findings, all dispositioned
+- F01 fixed: M4 5-seed rerun — exact parity (single-seed "twin edges ahead" was noise); paper corrected.
+- F02 fixed: FPR wording (calibration quantile vs measured 0-0.46%) in both drafts.
+- F03 verified: coolant envelope claim survives cross-family layout check (sig2 identical; sig1 differs - more DBC-integrity evidence).
+- F04 fixed: 4-of-65 attribution + duplicate citation. F06 fixed: +4 detector tests (9/9).
+- F08: pooled-PR leakage caught pre-paper (fig5 discarded last tick).
+- Report: docs/rigor-review.md (overall 4.2/5, accept band).

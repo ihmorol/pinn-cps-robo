@@ -19,12 +19,12 @@ We present an ablation-controlled study of physics-based intrusion detection for
 \section{Introduction}
 A masquerade attack on a CAN bus suspends legitimate frames and transmits fabricated ones at the expected frequency. The ROAD dataset's authors state the consequence plainly: frequency-based approaches ``will almost certainly fail'' against it~\cite{verma2024}. The published detectors that do target this class watch signal statistics --- clustering similarity~\cite{moriano2022}, graph structure~\cite{marfo2025}, or lightweight streaming models~\cite{moriano2026}. None of them asks the question a physicist would ask: the frames carry wheel speeds, a speedometer, and a coolant temperature, and those quantities are bound by kinematics. If the wheels say 60~km/h and the display says 160, something is wrong regardless of what the frequency spectrum says.
 
-Whether that observation turns into a working detector --- and whether the \emph{physics} part of it earns its keep --- is an empirical question. The machine-learning security literature has been burned before by evaluation shortcuts: only 4 of 65 surveyed CAN IDS papers compare against any baseline~\cite{verma2024}, and realistic datasets collapse the familiar 99\% accuracies to 39--66\%~\cite{song2026}. So we built the comparison carefully before believing any result.
+Whether that observation turns into a working detector --- and whether the \emph{physics} part of it earns its keep --- is an empirical question. The machine-learning security literature has been burned before by evaluation shortcuts: As cataloged in~\cite{verma2024}, only 4 of 65 surveyed CAN IDS papers compare against any baseline, and realistic datasets collapse the familiar 99\% accuracies to 39--66\%~\cite{song2026}. So we built the comparison carefully before believing any result.
 
 This paper makes four contributions.
 \begin{itemize}
 \item A \textbf{signal-recovery and physics-taxonomy method} for ROAD: we identify the anonymized wheel-speed, speedometer, and coolant channels from the publisher's own attack metadata, then show which physical-consistency law each of the four masquerade classes violates (Section~4).
-\item A \textbf{frame-level detector ladder} with ambient-only calibration: kinematic residuals detect three of four masquerade classes with recall 1.0 at a 0.1\% ambient false-positive rate, using zero attack data (Section~5).
+\item A \textbf{frame-level detector ladder} with ambient-only calibration: kinematic residuals detect three of four masquerade classes with recall 1.0, calibrated at the ambient 99.9th percentile (measured benign-frame false-positive rates 0--0.46\%), using zero attack data (Section~5).
 \item A \textbf{boundary finding}: the reverse-light masquerade is a live-patched, dynamically consistent snapshot that evades every value- and physics-based detector we tested --- and the reason it evades them is itself informative (Section~5.3).
 \item A \textbf{negative attribution result}: a physics-informed forecaster matches but never beats an equal-capacity twin across four training regimes and three loss weights. The physics value in this dataset is analytical, not learned (Section~6).
 \end{itemize}
@@ -136,11 +136,11 @@ The remaining question is whether \emph{learning with physics} beats learning wi
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.85\linewidth]{fig3_attribution.png}
-\caption{Attribution: PINN vs.\ physics-free twin across ambient training fractions. Parity everywhere; the twin edges ahead at 0.1\%.}
+\caption{Attribution: PINN vs.\ physics-free twin across ambient training fractions (five seeds; bars omitted because seed standard deviations are smaller than the markers). Exact parity.}
 \label{fig:attr}
 \end{figure}
 
-The result is parity. At 100\% of the data, both reach AP 0.72. At 0.1\% (about a thousand frames), the twin edges ahead (0.726 vs.\ 0.714). A sweep of the physics weight $\lambda \in \{0.1, 1, 10\}$ moves nothing outside noise. Both models handle the accelerator captures --- real, unusual driving --- with zero false positives.
+The result is parity, and it is exact: across five random seeds the two models are statistically indistinguishable in every regime (at 0.1\% of the data --- about a thousand frames --- AP 0.706 $\pm$ 0.001 for both; at 100\%, 0.711 $\pm$ 0.005). A sweep of the physics weight $\lambda \in \{0.1, 1, 10\}$ moves nothing outside noise. Both models handle the accelerator captures --- real, unusual driving --- with zero false positives.
 
 The mechanism is straightforward. The physics we can encode in a loss (display tracks wheels, speed changes smoothly) is a linear relation the twin learns from a thousand examples, and ROAD provides a million. This reproduces, in automotive security, the finding that physics priors pay off when the physics is hard to learn or the data is scarce~\cite{krishnapriyan2021,grossmann2024}. On this dataset, neither condition holds for the forecaster formulation. The physical knowledge that \emph{does} pay is the analytical form: it needs no training, no attack data, and it diagnoses \emph{which} law broke --- something a learned residual cannot name.
 
