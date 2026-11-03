@@ -112,3 +112,7 @@ Raw-log decoding with empirically solved bit layouts (validation gate: exact CSV
 - coolant fab (1): inside/outside both 255 — unresolved mapping anomaly (n=1), excluded from claims.
 
 **Dataset-integrity finding:** the shipped anonymized DBC does NOT decode the published CSVs (starts 5/21/37/53 len-14 vs actual 0/16/32/48 with per-family lens 14/14/14/14 ambient vs 13/11/10/14 masquerade). Layouts differ per capture family; anyone using the shipped DBC gets wrong values. We recovered mappings empirically from log+CSV pairs (solver in run_m2b.py).
+
+## Context-bit experiment (2026-11-03, experiments/m5-semantic-bit/) — P8 branch
+
+Attempted to close the reverse-light class with learned semantics: gradient boosting predicting the light bit from the frame's other live signals + wheel state (ambient-only training). Result: ambient AP = 0.091 vs base rate 0.052 — **the bit is not context-determined by anything ROAD records**. P7 rejected, P8 confirmed. The class is now defended by two failed approaches (kinematic physics AND learned context), making the "open on ROAD" claim much stronger: closing it requires information outside the dataset (the real DBC's gear encoding, or vehicle states not logged).

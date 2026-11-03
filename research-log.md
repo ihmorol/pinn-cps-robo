@@ -53,3 +53,6 @@
 ## 2026-11-03 (tick 9) — M5: LaTeX conversion compiled
 - paper/latex/main.tex: full two-column workshop paper (5 pp), compiles clean under MiKTeX, 20 verified references, 4 figures embedded. PDF committed for review.
 - Awaiting owner decisions: title / framing / venue.
+
+## 2026-11-03 (tick 10) — context-bit experiment: P8 confirmed
+- Learned-context detector (GBM, ambient-only) cannot predict the light bit (AP 0.09 vs 0.05 base). Reverse-light class defensibly open: two independent ambient-only approaches fail. Paper 5.3 gains one sentence.
