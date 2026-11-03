@@ -49,3 +49,7 @@
 - Decoder with empirical bit-layout solver + validation gate (exact CSV reproduction). Gate caught: shipped DBC layouts are wrong for the CSVs (per-family layouts differ) — dataset-integrity finding.
 - Fabrications: 3/4 classes caught by physics (same as masquerades); reverse-light boundary holds in both injection modes; coolant fab n=1 unresolved.
 - P4 rejected, P5/P6 confirmed. Paper gains: taxonomy now covers all 26 attack captures + the DBC integrity caveat.
+
+## 2026-11-03 (tick 9) — M5: LaTeX conversion compiled
+- paper/latex/main.tex: full two-column workshop paper (5 pp), compiles clean under MiKTeX, 20 verified references, 4 figures embedded. PDF committed for review.
+- Awaiting owner decisions: title / framing / venue.
