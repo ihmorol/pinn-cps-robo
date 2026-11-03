@@ -116,3 +116,7 @@ Raw-log decoding with empirically solved bit layouts (validation gate: exact CSV
 ## Context-bit experiment (2026-11-03, experiments/m5-semantic-bit/) — P8 branch
 
 Attempted to close the reverse-light class with learned semantics: gradient boosting predicting the light bit from the frame's other live signals + wheel state (ambient-only training). Result: ambient AP = 0.091 vs base rate 0.052 — **the bit is not context-determined by anything ROAD records**. P7 rejected, P8 confirmed. The class is now defended by two failed approaches (kinematic physics AND learned context), making the "open on ROAD" claim much stronger: closing it requires information outside the dataset (the real DBC's gear encoding, or vehicle states not logged).
+
+## Lesson (2026-11-03, fig5 attempt — discarded before reaching the paper)
+
+Building a pooled PR curve over all 12 reverse-light captures while RF had trained on captures 1-2 inflated RF's AP from 0.37 (leakage-free, capture 3 only) to 0.98. The pooled curve mixes training families into the test pool. Rule adopted: **every PR curve must be computed on a test set disjoint from its training set**; cross-mode transfer (train masq -> test fab) is a legitimate future experiment but needs its own pre-registered protocol. Fig5 discarded; the paper keeps the stage-2 split table.

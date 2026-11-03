@@ -56,3 +56,10 @@
 
 ## 2026-11-03 (tick 10) — context-bit experiment: P8 confirmed
 - Learned-context detector (GBM, ambient-only) cannot predict the light bit (AP 0.09 vs 0.05 base). Reverse-light class defensibly open: two independent ambient-only approaches fail. Paper 5.3 gains one sentence.
+
+## 2026-11-03 (tick 10b) — repo hygiene
+- Owner's faculty-proposal.md was swept into the public repo by git add -A; removed from the index (local copy kept, gitignored). NOTE: it remains in git history (commit 06:38); history scrub available on request.
+- Commit discipline changed: stage explicit paths from now on, never -A, because the owner edits this folder concurrently.
+
+## 2026-11-03 (tick 11) — fig5 discarded (leakage trap caught)
+- Pooled PR curve attempt leaked training families into the test pool (RF AP 0.37 -> 0.98 inflated). Removed before touching the paper. Rule: split-respecting curves only.
