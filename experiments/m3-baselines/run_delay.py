@@ -4,6 +4,7 @@ Completes the metric promised in the locked M3 protocol. Same calibration as sta
 (ambient 99.9th percentile per stream). Delay = first flagged frame inside the interval
 minus interval start. Captures never flagged inside their window -> no detection (ND).
 """
+import json
 import sys
 from pathlib import Path
 import numpy as np
@@ -72,8 +73,6 @@ thr["D0a_range", "speedo"] = float(np.quantile(
     np.concatenate([np.asarray(stream_scores(load_capture(c), "speedo")["D0a_range"], dtype=float)
                     for c in list_captures(ROAD, "ambient") if c.stem.startswith("ambient_") and len(load_capture(c)["speedo"])]), Q))
 
-meta = json = None
-import json
 meta = json.load(open(ROAD / "attacks/capture_metadata.json"))
 
 rows = []

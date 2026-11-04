@@ -79,3 +79,9 @@
 - F04 fixed: 4-of-65 attribution + duplicate citation. F06 fixed: +4 detector tests (9/9).
 - F08: pooled-PR leakage caught pre-paper (fig5 discarded last tick).
 - Report: docs/rigor-review.md (overall 4.2/5, accept band).
+
+## 2026-11-04 (code audit tick) — implementation-level review
+- max_run floor fixed to per-capture maxima (was cross-capture inflated); stage-1 results IDENTICAL (thresholds unchanged) - flaw never affected conclusions.
+- Dead code removed (physics.freeze_score + test); run_delay.py json import properly restored; delay results reproduce exactly.
+- Cross-family value-scale issue documented in paper Sec 7 (ambient-only floors are conservative; detections hold a fortiori); per-family alpha investigation recorded in findings (contaminated fits explained the 0.089/4.52 outliers; pipeline always used ambient-only fits).
+- Tests 8/8. LaTeX recompiled (5 pp).

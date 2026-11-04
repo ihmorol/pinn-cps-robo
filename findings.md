@@ -124,3 +124,9 @@ Building a pooled PR curve over all 12 reverse-light captures while RF had train
 ## Detection delay (2026-11-03, experiments/m3-baselines/run_delay.py — completes the locked M3 protocol)
 
 Median delay from injection onset to first flagged frame: **0.005–0.007 s (≈ one CAN frame at 100 Hz) for all three catchable classes**, identical for D0a and D1. Reverse-light: never detected inside the window+5s (6/6 captures, both detectors) — consistent with the §5.3 boundary. Paper claim upgraded: "detection within a single frame of onset" beats windowed statistical detectors that need seconds of history.
+
+## Code audit (2026-11-04) — flaws found and fixed
+
+- **Cross-family value scales (documented, conservative direction):** ambient-family and masquerade-family CSVs use different bit layouts, so absolute value scales are not comparable across families. Consequences audited: (a) within-capture physics residuals (Table 1 ratios) are family-internal and valid; (b) ambient-derived floors applied to masquerade captures are CONSERVATIVE (the masq benign scale is smaller, so the floor overstates it) — detection results hold a fortiori; (c) the speedo:wheel ratio alpha is family-stable on benign frames (~1.16, verified per-family on benign frames only — fits including attack frames are contaminated and were never used by the pipeline).
+- **run_m3 max_run floor** was computed on concatenated ambient frames (cross-capture adjacency); fixed to per-capture maxima. Stage-1 results unchanged (thresholds identical) — the flaw never affected conclusions.
+- **Dead code removed:** physics.freeze_score (superseded by the relational L2d law) and its test; run_delay.py hack line cleaned. Tests 8/8.

@@ -4,7 +4,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from pinn_cps_robo.physics import inter_wheel_residual, continuity_residual, relation_residual, fit_scale, freeze_score
+from pinn_cps_robo.physics import inter_wheel_residual, continuity_residual, relation_residual, fit_scale
 
 
 def test_inter_wheel_benign_small_attack_huge():
@@ -30,12 +30,6 @@ def test_scale_fit_recovers_ratio():
     s = fit_scale(x, y)
     assert abs(s - 0.5) < 0.01
 
-
-def test_freeze_score_zero_for_constant():
-    v = np.full(100, 7.0)
-    assert freeze_score(v, 10).max() == 0.0
-    v2 = np.concatenate([np.full(50, 7.0), np.linspace(7, 8, 50)])
-    assert freeze_score(v2, 10)[-1] > 0.0
 
 
 def test_relation_residual():

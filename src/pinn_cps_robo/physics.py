@@ -45,19 +45,3 @@ def fit_scale(x, y):
     med = float(np.median(ratios))
     ls = float(np.dot(x[m], y[m]) / max(np.dot(x[m], x[m]), 1e-12))
     return 0.5 * (med + ls)
-
-
-def freeze_score(v, window):
-    """Rolling std (zero = frozen). A signal frozen while the vehicle moves is
-    the masquerade signature (payload holds one frame value)."""
-    v = np.asarray(v, dtype=float)
-    n = len(v)
-    out = np.empty(n)
-    csum = np.concatenate(([0.0], np.cumsum(v)))
-    csum2 = np.concatenate(([0.0], np.cumsum(v * v)))
-    for i in range(n):
-        lo = max(0, i - window + 1)
-        m = i - lo + 1
-        s, s2 = csum[i + 1] - csum[lo], csum2[i + 1] - csum2[lo]
-        out[i] = max(0.0, s2 / m - (s / m) ** 2) ** 0.5
-    return out
